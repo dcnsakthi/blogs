@@ -1,8 +1,21 @@
+##################################Genearate Script from MSSQL to Synapse SQL#######################################
+# Generate CSV file using below sql script in MSSQL
+# SELECT 
+#     'FIN' AS DOMAIN,
+#     C.*,
+#     CASE WHEN KCU.COLUMN_NAME IS NOT NULL THEN 'Y' ELSE 'N' END AS IS_PRIMARY_KEY
+# FROM INFORMATION_SCHEMA.COLUMNS C
+# LEFT JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE KCU ON
+#     C.TABLE_NAME = KCU.TABLE_NAME
+#     AND C.COLUMN_NAME = KCU.COLUMN_NAME
+#     AND KCU.CONSTRAINT_NAME like '%PK_%'; -- Assuming 'PRIMARY' is the name of the primary key constraint
+###################################################################################################################
+
 param (
     [string] $csvFile = 'C:\Workspace\temp\Information_Schema.csv',
-    [string] $schemaPrefix = 'DTL',  # You can change this to 'STG', 'DTL', or 'DTL_REP' as needed
-    [string] $tablePrefix = 'DTL_REP',  # You can change this to 'DTL' or 'DTL_REP' as needed
-    [string] $additionalColumns = 'CRDT [datetimeoffset](7) NOT NULL,|BRDT [datetimeoffset](7) NOT NULL'  # Comma-separated list of additional columns and data types (e.g., "column1 int, column2 varchar(255)")
+    [string] $schemaPrefix = 'TRAN',  # You can change this to 'STG', 'TRAN', or 'DWM' as needed
+    [string] $tablePrefix = 'USER_RU',  # You can change this to 'TRAN' or 'USER_RU' as needed
+    [string] $additionalColumns = 'CREATED_TS [datetimeoffset](7) NOT NULL,|LOAD_TS [datetimeoffset](7) NOT NULL'  # Comma-separated list of additional columns and data types (e.g., "column1 int, column2 varchar(255)")
 )
 
 # Load the CSV file into a PowerShell variable
