@@ -23,11 +23,8 @@ The pipeline is initially set up with three default stages: Development, Test, a
 #### General:
 <img width="852" alt="image" src="https://github.com/dcnsakthi/blogs/assets/17950332/0b54467a-d5b0-4485-ad57-38dd6a797e8c">
 
-#### Data Application:
-<img width="852" alt="image" src="https://github.com/dcnsakthi/blogs/assets/17950332/f924c3b8-73a1-439f-90b3-5cbc5ccbc281">
-
-#### Quality Assurance and Quality Control:
-<img width="852" alt="image" src="https://github.com/dcnsakthi/blogs/assets/17950332/3e35ba88-9013-4eb8-8586-6cb388139800">
+#### Practical
+<img width="852" alt="image" src="https://github.com/dcnsakthi/blogs/assets/17950332/87a1f341-aa98-4f64-afe3-3370fd5aed75">
 
 #### Data Science:
 <img width="852" alt="image" src="https://github.com/dcnsakthi/blogs/assets/17950332/110ad104-ee4e-4f2c-b2ec-44a8cd082bff">
@@ -35,5 +32,10 @@ The pipeline is initially set up with three default stages: Development, Test, a
 #### Data Platform:
 <img width="848" alt="image" src="https://github.com/dcnsakthi/blogs/assets/17950332/313fce82-3cd5-4a62-acaf-28f6b462705d">
 
+#### Data Application:
+<img width="852" alt="image" src="https://github.com/dcnsakthi/blogs/assets/17950332/f924c3b8-73a1-439f-90b3-5cbc5ccbc281">
+
+#### Quality Assurance and Quality Control:
+<img width="852" alt="image" src="https://github.com/dcnsakthi/blogs/assets/17950332/3e35ba88-9013-4eb8-8586-6cb388139800">
 
 <hr>
