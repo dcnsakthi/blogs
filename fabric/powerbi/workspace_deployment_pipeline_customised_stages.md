@@ -13,7 +13,7 @@ The pipeline is initially set up with three default stages: Development, Test, a
 #### Customise the stages
 <img width="852" alt="image" src="https://github.com/dcnsakthi/blogs/assets/17950332/c6f0bf07-3fd4-450b-aee7-5fdd3ee7e32e">
 
-#### Assigne the workspaces
+#### Assign the workspaces
 <img width="852" alt="image" src="https://github.com/dcnsakthi/blogs/assets/17950332/ce769b3b-0dd2-4972-a945-ffd6679c82a1">
 
 <hr>
