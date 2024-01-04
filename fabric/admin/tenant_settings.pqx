@@ -1,0 +1,39 @@
+// Here is a sample M query script that can produce a report on Microsoft Fabric (previously called as Power BI) tenant settings using the REST API:
+
+let 
+    CurrentDateTimeForVersion = DateTime.FixedLocalNow(),
+    auth_url = "https://login.microsoftonline.com/"&pEntraTenantId&"/oauth2/v2.0/token",
+    body = [
+        grant_type = "client_credentials",
+        scope = "https://analysis.windows.net/powerbi/api/.default",
+        client_id = pEntraClientId,
+        client_secret=pEntraClientSecret
+    ],
+    GetJson =
+        Json.Document(
+            Web.Contents(
+                auth_url, [
+                    Headers=[
+                        Accept="application/json", 
+                        #"Content-Type"="application/x-www-form-urlencoded"
+                    ], 
+                    Content= Text.ToBinary(Uri.BuildQueryString(body))
+                ]
+            )
+        ),
+    access_token = GetJson[access_token],
+    FormattedDateTimeForVersion = DateTime.ToText(CurrentDateTimeForVersion, "yyyyMMdd"),
+    Source = Json.Document(Web.Contents("https://api.fabric.microsoft.com/v1/admin/tenantsettings", [Headers=[Authorization="Bearer "& access_token ]])),
+    #"ConvertedToTable" = Record.ToTable(Source),
+    #"ExpandedListColumnResult" = Table.ExpandListColumn(#"ConvertedToTable", "Value"),
+    #"ExpandRecordColumnSettings" = Table.ExpandRecordColumn(#"ExpandedListColumnResult", "Value", {"settingName", "title", "enabled", "canSpecifySecurityGroups", "enabledSecurityGroups", "tenantSettingGroup"}, {"SettingUniqueName", "TenantSettingTitle", "Enabled", "CanSpecifySecurityGroups", "EnabledSecurityGroups", "TenantSettingGroup"}),
+    #"ExpandListColumnSecGroups" = Table.ExpandListColumn(#"ExpandRecordColumnSettings", "EnabledSecurityGroups"),
+    #"ExpandRecordColumnSettingsSecGroups" = Table.ExpandRecordColumn(#"ExpandListColumnSecGroups", "EnabledSecurityGroups", {"graphId", "name"}, {"EnabledSecurityGroupsGraphId", "EenabledSecurityGroupsName"}),
+    #"AddedCustomRefreshVersion" = Table.AddColumn(ExpandRecordColumnSettingsSecGroups, "RefreshVersion", each FormattedDateTimeForVersion),
+    #"AddedCustomSecGroup" = Table.AddColumn(AddedCustomRefreshVersion, "CanSpecifySecGroup", each if [CanSpecifySecurityGroups] = true then "Yes" else "No"),
+    #"AddedCombineSecurityGroups" = Table.AddColumn(AddedCustomSecGroup, "SecurityGroups", each Text.Combine({[EenabledSecurityGroupsName], " (", [EnabledSecurityGroupsGraphId], ")"})),
+    #"AddedTenantSettingStatus" = Table.AddColumn(AddedCombineSecurityGroups, "TenantSettingStatus", each if [Enabled] = true then "Enabled" else "Disabled" ),
+    #"AddedToolTipSecGroups" = Table.AddColumn(AddedTenantSettingStatus, "ToolTipSecGroups", each "Can Specify Security Groups in the Settings? : " & Text.From([CanSpecifySecGroup])),
+    #"FinalTableWithTitle" = Table.AddColumn(AddedToolTipSecGroups, "TableTitle", each "Microsoft Fabric Tenant Settings as of " & Text.From([RefreshVersion]))
+in
+    #"FinalTableWithTitle"
