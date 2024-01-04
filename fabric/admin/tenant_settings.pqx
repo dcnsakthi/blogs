@@ -2,12 +2,12 @@
 
 let 
     CurrentDateTimeForVersion = DateTime.FixedLocalNow(),
-    auth_url = "https://login.microsoftonline.com/"&pEntraTenantId&"/oauth2/v2.0/token",
+    auth_url = "https://login.microsoftonline.com/"&<your-tenant-id>&"/oauth2/v2.0/token",
     body = [
         grant_type = "client_credentials",
         scope = "https://analysis.windows.net/powerbi/api/.default",
-        client_id = pEntraClientId,
-        client_secret=pEntraClientSecret
+        client_id = <your-client-id>,
+        client_secret=<your-client-secret>
     ],
     GetJson =
         Json.Document(
