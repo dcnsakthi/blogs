@@ -1,4 +1,4 @@
-Microsoft Fabric is a unified platform that integrates data and services, encompassing data science and data lakes, to enhance your team’s data utilization. Discover how to leverage Fabric’s features like OneLake, Data Factory, Synapse, Data Activator, Power BI, and Microsoft Purview to usher your data into the AI era.
+Microsoft Fabric is a unified platform that combines data and services, encompassing data science, data engineering, data lakehouses, data warehouses and visualizations, to enhance your team’s data utilization. Discover how to leverage Fabric’s features like OneLake, Data Factory, Synapse, Data Activator, Power BI, and Microsoft Purview to usher your data into the AI era.
 
 Tenant settings provide a detailed level of control over the features accessible to your organization. If you’re worried about sensitive data, some features may not be suitable for your organization, or you may want to limit certain features to specific groups.
 
