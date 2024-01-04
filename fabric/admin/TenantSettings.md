@@ -9,6 +9,12 @@ To generate a tenant settings report using REST API, you can use the following s
 
 Here are example scripts in Python and PowerShell that can generate a report on tenant settings for Microsoft Fabric (including Power BI) using the REST API:
 
+## Power BI M Query
+[Code Segment](https://github.com/dcnsakthi/blogs/blob/main/fabric/admin/tenant_settings.pqx)
+
+<img width="955" alt="image" src="https://github.com/dcnsakthi/blogs/assets/17950332/c003a851-c146-4e47-a8fe-3e2fc39e4ce9">
+
+
 ## Python
 [Code Segment](https://github.com/dcnsakthi/blogs/blob/main/fabric/admin/tenant_settings.py)
 
