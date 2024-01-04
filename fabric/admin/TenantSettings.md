@@ -1,5 +1,11 @@
 Microsoft Fabric is a unified platform that integrates data and services, encompassing data science and data lakes, to enhance your team’s data utilization. Discover how to leverage Fabric’s features like OneLake, Data Factory, Synapse, Data Activator, Power BI, and Microsoft Purview to usher your data into the AI era.
 
+Tenant settings provide a detailed level of control over the features accessible to your organization. If you’re worried about sensitive data, some features may not be suitable for your organization, or you may want to limit certain features to specific groups.
+
+While tenant settings that govern the availability of features in the Power BI user interface can aid in setting up governance policies, they do not serve as a security measure. For instance, the ‘Export data’ setting does not limit a Power BI user’s permissions on a semantic model. Power BI users with read access to a semantic model have the right to query this model and may be able to save the results without utilizing the ‘Export data’ feature in the Power BI user interface.
+
+By extracting and externally visualizing tenant settings in Power BI reports, stakeholders can view, archive, and compare these settings with historical data. This approach negates the need for higher privileges and access to the Microsoft Fabric (previously Power BI) admin portal.
+
 To generate a tenant settings report using REST API, you can use the following steps:
 - Obtain an access token from Microsoft Entra (aka Azure Active Directory) by following this guide:
     https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-client-creds-grant-flow
