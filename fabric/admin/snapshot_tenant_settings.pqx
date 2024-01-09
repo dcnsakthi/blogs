@@ -1,0 +1,44 @@
+// Parameter
+
+// pSnapshotFolder
+"C:\Temp\TenantSettings" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+
+//Sample File
+let
+    Source = Folder.Files(pSnapshotFolder),
+    Navigation = Source{0}[Content]
+in
+    Navigation
+  
+// pSampleFile
+#"Sample File" meta [IsParameterQuery=true, BinaryIdentifier=#"Sample File", Type="Binary", IsParameterQueryRequired=true]
+
+// Transform Sample File
+let
+    Source = Json.Document(pSampleFile),
+    #"Converted to Table" = Table.FromList(Source, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+    #"Expanded Column1" = Table.ExpandRecordColumn(#"Converted to Table", "Column1", {"settingName", "title", "enabled", "canSpecifySecurityGroups", "enabledSecurityGroups", "tenantSettingGroup", "properties"}, {"settingName", "title", "enabled", "canSpecifySecurityGroups", "enabledSecurityGroups", "tenantSettingGroup", "properties"}),
+    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Column1",{{"settingName", type text}, {"title", type text}, {"enabled", type logical}, {"canSpecifySecurityGroups", type logical}, {"enabledSecurityGroups", type any}, {"tenantSettingGroup", type text}, {"properties", type any}})
+in
+    #"Changed Type"
+
+// Snapshot TenantSettings
+let
+    Source = Folder.Files(pSnapshotFolder),
+    #"FilteredHiddenFiles" = Table.SelectRows(Source, each [Attributes]?[Hidden]? <> true),
+    #"InvokeCustomFunction" = Table.AddColumn(#"FilteredHiddenFiles", "Transform File", each #"Transform File"([Content])),
+    #"RenamedColumnSourceFileName" = Table.RenameColumns(#"InvokeCustomFunction", {"Name", "Source.Name"}),
+    #"RemovedOtherColumnFileProp" = Table.SelectColumns(#"RenamedColumnSourceFileName", {"Source.Name", "Transform File"}),
+    #"ExpandedTableColumnSettings" = Table.ExpandTableColumn(#"RemovedOtherColumnFileProp", "Transform File", Table.ColumnNames(#"Transform File"(#"Sample File"))),
+    #"ExpandedTableColumnChangedType" = Table.TransformColumnTypes(#"ExpandedTableColumnSettings",{{"Source.Name", type text}, {"settingName", type text}, {"title", type text}, {"enabled", type logical}, {"canSpecifySecurityGroups", type logical}, {"enabledSecurityGroups", type any}, {"tenantSettingGroup", type text}, {"properties", type any}}),
+    #"ExpandedEnabledSecurityGroupsList" = Table.ExpandListColumn(#"ExpandedTableColumnChangedType", "enabledSecurityGroups"),
+    #"ExpandedEnabledSecurityGroupsRecord" = Table.ExpandRecordColumn(#"ExpandedEnabledSecurityGroupsList", "enabledSecurityGroups", {"graphId", "name"}, {"enabledSecurityGroups.graphId", "enabledSecurityGroups.name"}),
+    #"ExpandedSettingsPropertiesList" = Table.ExpandListColumn(#"ExpandedEnabledSecurityGroupsRecord", "properties"),
+    #"ExpandedSettingsPropertiesRecord" = Table.ExpandRecordColumn(#"ExpandedSettingsPropertiesList", "properties", {"name", "value", "type"}, {"properties.name", "properties.value", "properties.type"}),
+    #"InsertedSnapshotVersion" = Table.AddColumn(#"ExpandedSettingsPropertiesRecord", "SnapshotVersion", each Text.BetweenDelimiters([Source.Name], "_", ".", 2, 0), type text),
+    #"RenamedTenantSettingsColumns" = Table.RenameColumns(InsertedSnapshotVersion,{{"Source.Name", "FileName"}, {"settingName", "SettingUniqueName"}, {"title", "TenantSettingTitle"}, {"canSpecifySecurityGroups", "CanSpecifySecurityGroups"}, {"enabled", "Enabled"}, {"enabledSecurityGroups.graphId", "EnabledSecurityGroupsGraphId"}, {"enabledSecurityGroups.name", "EnabledSecurityGroupsName"}, {"tenantSettingGroup", "TenantSettingGroup"}, {"properties.name", "PropertiesName"}, {"properties.value", "PropertiesValue"}, {"properties.type", "PropertiesType"}}),
+    #"AddedCustomSecGroup" = Table.AddColumn(RenamedTenantSettingsColumns, "CanSpecifySecGroup", each if [CanSpecifySecurityGroups] = true then "Yes" else "No"),
+    #"AddedCombineSecurityGroups" = Table.AddColumn(AddedCustomSecGroup, "SecurityGroups", each Text.Combine({[EnabledSecurityGroupsName], " (", [EnabledSecurityGroupsGraphId], ")"})),
+    #"AddedTenantSettingStatus" = Table.AddColumn(AddedCombineSecurityGroups, "TenantSettingStatus", each if [Enabled] = true then "Enabled" else "Disabled" )
+in
+    AddedTenantSettingStatus
