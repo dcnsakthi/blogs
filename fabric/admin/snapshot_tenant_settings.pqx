@@ -1,4 +1,4 @@
-// Parameter
+// Here is a sample M query script that can produce a report on Microsoft Fabric (previously called as Power BI) tenant settings using the REST API:
 
 // pSnapshotFolder
 "C:\Temp\TenantSettings" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
