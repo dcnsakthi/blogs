@@ -13,6 +13,14 @@ To generate a tenant settings report using REST API, you can use the following s
     https://learn.microsoft.com/rest/api/fabric/admin/tenants/get-tenant-settings
 - Parse the JSON response and extract the relevant information for your report.
 
+## Tenant Settings Snapshot Comparison
+Save the API response as JSON files every day or week and use Power BI to contrast each snapshot files, which also lets you subscribe to an email or alerts based on the metrics if any.
+
+[Code Segment](https://github.com/dcnsakthi/blogs/blob/main/fabric/admin/snapshot_tenant_settings.pqx)
+
+<img width="1041" alt="image" src="https://github.com/dcnsakthi/blogs/assets/17950332/364254cf-3953-4cf0-9936-c047a886309a">
+
+
 Here are example scripts in M query, Python and PowerShell that can generate a report on tenant settings for Microsoft Fabric (including Power BI) using the REST API:
 
 ## Power BI M Query
