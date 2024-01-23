@@ -1,4 +1,4 @@
-# Get Power BI Datasets and it's Data Source Connection Details from REST API
+# Get Power BI Datasets and it's Data Source Connection Details using Admin REST API
 
 # PowerShell
 param (  
