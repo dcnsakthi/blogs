@@ -1,3 +1,9 @@
+// Databricks Notebooks Connecting with Microsoft Fabric OneLake
+
+// Step #1: Create a Service Principal in Microsoft Entra ID (Azure Active Directory) - To get started, create a Service Principal in Microsoft Entra ID (Azure Active Directory) with the required credentials, ensuring that Microsoft Fabric OneLake is present in the same tenant.
+// Step #2: Grant Permission to the Service Principal - Next, grant the appropriate permission to the Service Principal within the Microsoft Fabric workspace, allowing it to read data from the OneLake storage effectively.
+// Step #3: Create Notebooks in Databricks - Utilize Databricks notebooks to read data from the Microsoft Fabric OneLake Lakehouse endpoint using Spark compute. These notebooks should include the Service Principal credentials (Tenant ID, Client ID, Client Secret) to establish secure access to the OneLake data.
+
 %scala
 // Configure the Service Principal credentials
 spark.conf.set("fs.azure.account.auth.type.onelake.dfs.fabric.microsoft.com", "OAuth")
