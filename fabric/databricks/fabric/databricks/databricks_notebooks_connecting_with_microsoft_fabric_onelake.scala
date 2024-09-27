@@ -16,7 +16,7 @@ spark.conf.set("fs.azure.account.oauth2.client.endpoint.onelake.dfs.fabric.micro
 val df = spark.read.format("delta")
   .option("header", "true")
   .option("inferSchema", "true")
-  .load("abfss://MSFabricWS@onelake.dfs.fabric.microsoft.com/EDLH.Lakehouse/Tables/dbo/publicholidays")
+  .load("abfss://{***WorkspaceName***}@onelake.dfs.fabric.microsoft.com/{**LakehoueName**}.Lakehouse/Tables/{**SchemaName**}/{****TableName****}")
 
 // Display the DataFrame
 display(df)
